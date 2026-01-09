@@ -27,6 +27,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/detail").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/user/update").authenticated()
 
                 )
 

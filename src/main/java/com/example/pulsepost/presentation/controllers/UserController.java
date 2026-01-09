@@ -2,6 +2,7 @@ package com.example.pulsepost.presentation.controllers;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.pulsepost.data.services.user.UserService;
 import com.example.pulsepost.domain.dtos.Token.TokenDto;
 import com.example.pulsepost.domain.dtos.User.UserDetailDto;
+import com.example.pulsepost.domain.dtos.User.UserUpdateDto;
 import com.example.pulsepost.domain.models.UserModel;
 import com.example.pulsepost.presentation.validations.GroupValidation;
 
@@ -34,6 +36,11 @@ public class UserController {
     @GetMapping("/detail")
     public UserDetailDto DetailUser() {
         return userService.detail();
+    }
+
+    @PatchMapping("/update")
+    public UserDetailDto UpdateUser(UserUpdateDto data) {
+        return userService.update(data);
     }
 
 }

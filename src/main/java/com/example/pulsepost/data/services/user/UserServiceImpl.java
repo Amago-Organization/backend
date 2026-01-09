@@ -1,15 +1,19 @@
 package com.example.pulsepost.data.services.user;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pulsepost.data.repositories.UserRepository;
 import com.example.pulsepost.data.services.token.TokenService;
+import com.example.pulsepost.data.services.upload.CloudinaryUploadService;
 import com.example.pulsepost.domain.dtos.Token.TokenDto;
 import com.example.pulsepost.domain.dtos.User.UserDetailDto;
+import com.example.pulsepost.domain.dtos.User.UserUpdateDto;
 import com.example.pulsepost.domain.exceptions.DomainException;
 import com.example.pulsepost.domain.mappers.User.UserMapper;
 import com.example.pulsepost.domain.models.UserModel;
@@ -24,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private TokenService tokenService;
+    private CloudinaryUploadService cloudinaryUploadService;
 
     @Override
     @Transactional
@@ -69,6 +74,46 @@ public class UserServiceImpl implements UserService {
         UserModel user = (UserModel) principal;
 
         return UserMapper.toDetailDto(user);
+    }
+
+    @Override
+    @Transactional
+    public UserDetailDto update(UserUpdateDto data) {
+        Object principal = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (!(principal instanceof UserModel)) {
+            throw new DomainException(ExceptionMessage.invalidAuthentication);
+        }
+
+        UserModel user = (UserModel) principal;
+
+        if (data.name() != null) {
+            user.setName(data.name());
+        }
+        if (data.bio() != null) {
+            user.setBio(data.bio());
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+
+        UserModel updatedUser = userRepository.save(user);
+
+        MultipartFile file = data.image();
+        if (file != null && !file.isEmpty()) {
+
+            if (updatedUser.getImage() != null && !updatedUser.getImage().isEmpty()) {
+                cloudinaryUploadService.deleteFile(updatedUser.getId());
+            }
+
+            String imageUrl = cloudinaryUploadService.uploadFile(file, updatedUser.getId());
+            updatedUser.setImage(imageUrl);
+
+            updatedUser = userRepository.save(updatedUser);
+        }
+
+        return UserMapper.toDetailDto(updatedUser);
     }
 
 }
