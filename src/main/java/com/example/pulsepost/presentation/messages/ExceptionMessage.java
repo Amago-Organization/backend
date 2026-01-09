@@ -5,6 +5,10 @@ public class ExceptionMessage {
 
     public static final String unauthorizedAccess = "Acesso não autorizado!";
 
+    public static final String uploadFileError = "Erro ao fazer upload do arquivo!";
+
+    public static final String deleteFileError = "Erro ao apagar o arquivo!";
+
     public static final String attributeUsed(String attribute) {
         return attribute + " já em uso!";
     }
