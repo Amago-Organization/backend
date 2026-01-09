@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.pulsepost.data.repositories.PostRepository;
 import com.example.pulsepost.data.services.upload.CloudinaryUploadService;
 import com.example.pulsepost.domain.dtos.post.PostDetailDto;
+import com.example.pulsepost.domain.dtos.post.PostListDto;
 import com.example.pulsepost.domain.dtos.post.PostRegisterDto;
 import com.example.pulsepost.domain.dtos.post.PostUpdateDto;
 import com.example.pulsepost.domain.enums.TypePostEnum;
@@ -126,6 +127,11 @@ public class PostServiceImpl implements PostService {
     public void delete(String id) {
         postRepository.deleteById(postRepository.findById(id).map(p -> p.getId())
                 .orElseThrow(() -> new DomainException(ExceptionMessage.notFound("Post"))));
+    }
+
+    @Override
+    public PostListDto list() {
+        return  PostMapper.toListDto(postRepository.findAll());        
     }
 
 }

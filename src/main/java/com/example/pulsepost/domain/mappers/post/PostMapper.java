@@ -1,11 +1,14 @@
 package com.example.pulsepost.domain.mappers.post;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.pulsepost.domain.dtos.post.PostDetailDto;
+import com.example.pulsepost.domain.dtos.post.PostListDto;
 import com.example.pulsepost.domain.dtos.post.PostRegisterDto;
 import com.example.pulsepost.domain.dtos.post.PostUpdateDto;
 import com.example.pulsepost.domain.enums.TypePostEnum;
@@ -70,5 +73,13 @@ public class PostMapper {
     public static PostDetailDto toDetailDto(PostModel model) {
         return new PostDetailDto(model.getId(), model.getTitle(), model.getDescription(), model.getTypePost(),
                 model.getFile(), model.getCreatedAt(), model.getUpdatedAt());
+    }
+
+    public static PostListDto toListDto(List<PostModel> modelList) {
+        List<PostDetailDto> posts = modelList.stream()
+                .map(PostMapper::toDetailDto)
+                .collect(Collectors.toList());
+
+        return new PostListDto(posts);
     }
 }
