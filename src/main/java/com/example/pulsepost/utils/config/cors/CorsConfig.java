@@ -1,4 +1,4 @@
-package com.example.pulsepost.infra.config;
+package com.example.pulsepost.utils.config.cors;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

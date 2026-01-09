@@ -1,4 +1,4 @@
-package com.example.pulsepost.presentation.security;
+package com.example.pulsepost.utils.config.security;
 
 import java.io.IOException;
 import java.util.List;
