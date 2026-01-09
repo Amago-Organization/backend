@@ -56,9 +56,12 @@ public class CloudinaryUploadServiceImpl implements CloudinaryUploadService {
     }
 
     @Override
-    public void deleteFile(String publicId) {
+    public void deleteFile(String publicId, boolean isVideo) {
         try {
-            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            String typePrefix = isVideo ? "video" : "image";
+            cloudinary.uploader().destroy(
+                    typePrefix + "/" + publicId,
+                    ObjectUtils.asMap("resource_type", isVideo ? "video" : "image"));
         } catch (IOException e) {
             throw new DomainException(ExceptionMessage.uploadFileError);
         }

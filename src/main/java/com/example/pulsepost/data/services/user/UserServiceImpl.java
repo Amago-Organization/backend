@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
         if (file != null && !file.isEmpty()) {
 
             if (updatedUser.getImage() != null && !updatedUser.getImage().isEmpty()) {
-                cloudinaryUploadService.deleteFile(updatedUser.getId());
+                cloudinaryUploadService.deleteFile(updatedUser.getId(), false);
             }
 
             String imageUrl = cloudinaryUploadService.uploadFile(file, updatedUser.getId());
