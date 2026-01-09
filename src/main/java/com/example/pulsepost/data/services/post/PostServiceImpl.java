@@ -8,8 +8,10 @@ import com.example.pulsepost.data.services.upload.CloudinaryUploadService;
 import com.example.pulsepost.domain.dtos.post.PostDetailDto;
 import com.example.pulsepost.domain.dtos.post.PostRegisterDto;
 import com.example.pulsepost.domain.enums.TypePostEnum;
+import com.example.pulsepost.domain.exceptions.DomainException;
 import com.example.pulsepost.domain.mappers.post.PostMapper;
 import com.example.pulsepost.domain.models.PostModel;
+import com.example.pulsepost.presentation.messages.ExceptionMessage;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -48,6 +50,12 @@ public class PostServiceImpl implements PostService {
         }
 
         return PostMapper.toDetailDto(post);
+    }
+
+    @Override
+    public PostDetailDto detail(String id) {
+        return PostMapper.toDetailDto(postRepository.findById(id).map(p -> p)
+                .orElseThrow(() -> new DomainException(ExceptionMessage.notFound("Post"))));
     }
 
 }

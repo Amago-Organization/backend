@@ -17,7 +17,7 @@ public class PostMapper {
         if (model == null) {
             return null;
         }
-        return new PostRegisterDto(model.getUseId(), model.getTitle(), model.getDescription(), model.getTypePost(),
+        return new PostRegisterDto(model.getUseId(), model.getTitle(), model.getDescription(),
                 file);
     }
 
@@ -31,13 +31,8 @@ public class PostMapper {
         model.setUseId(dto.userId());
         model.setTitle(dto.title());
         model.setDescription(dto.description());
-        if (dto.typePost() == null) {
-            model.setTypePost(TypePostEnum.TEXT);
-        } else {
-            model.setTypePost(dto.typePost());
-
-        }
-        model.setUpdatedAt(LocalDateTime.now());
+        model.setTypePost(TypePostEnum.TEXT);
+        model.setCreatedAt(LocalDateTime.now());
         return model;
     }
 

@@ -61,7 +61,7 @@ public class PostModel {
 
     @NotNull(groups = GroupValidation.Create.class)
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
