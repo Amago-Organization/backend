@@ -1,6 +1,7 @@
 package com.example.pulsepost.presentation.controllers;
 
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,6 @@ public class PostController {
         return postService.register(data);
     }
 
-
     @GetMapping("/detail/{id}")
     public PostDetailDto detail(@PathVariable String id) {
         return postService.detail(id);
@@ -36,5 +36,10 @@ public class PostController {
     @PatchMapping("/update/{id}")
     public PostDetailDto update(@PathVariable String id, PostUpdateDto data) {
         return postService.update(id, data);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable String id) {
+        postService.delete(id);
     }
 }

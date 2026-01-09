@@ -10,5 +10,7 @@ public interface PostService {
     public PostDetailDto detail(String id);
 
     public PostDetailDto update(String id, PostUpdateDto data);
+    
+    public void delete(String id);
 
 }

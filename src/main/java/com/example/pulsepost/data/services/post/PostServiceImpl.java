@@ -122,4 +122,10 @@ public class PostServiceImpl implements PostService {
 
     }
 
+    @Override
+    public void delete(String id) {
+        postRepository.deleteById(postRepository.findById(id).map(p -> p.getId())
+                .orElseThrow(() -> new DomainException(ExceptionMessage.notFound("Post"))));
+    }
+
 }

@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/post/register").authenticated()
                         .requestMatchers(HttpMethod.GET, "/post/detail/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/post/update/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/post/delete/**").authenticated()
 
                 )
 
