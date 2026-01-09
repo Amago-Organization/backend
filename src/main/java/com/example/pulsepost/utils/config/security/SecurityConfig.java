@@ -29,6 +29,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/user/detail").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/user/update").authenticated()
 
+                        .requestMatchers(HttpMethod.POST, "/post/register").authenticated()
+
                 )
 
                 .addFilterBefore(securityFilterConfig, UsernamePasswordAuthenticationFilter.class)

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.pulsepost.data.services.user.UserService;
-import com.example.pulsepost.domain.dtos.Token.TokenDto;
-import com.example.pulsepost.domain.dtos.User.UserDetailDto;
-import com.example.pulsepost.domain.dtos.User.UserUpdateDto;
+import com.example.pulsepost.domain.dtos.token.TokenDto;
+import com.example.pulsepost.domain.dtos.user.UserDetailDto;
+import com.example.pulsepost.domain.dtos.user.UserUpdateDto;
 import com.example.pulsepost.domain.models.UserModel;
 import com.example.pulsepost.presentation.validations.GroupValidation;
 

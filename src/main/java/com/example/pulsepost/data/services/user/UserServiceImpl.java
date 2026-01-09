@@ -11,11 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.pulsepost.data.repositories.UserRepository;
 import com.example.pulsepost.data.services.token.TokenService;
 import com.example.pulsepost.data.services.upload.CloudinaryUploadService;
-import com.example.pulsepost.domain.dtos.Token.TokenDto;
-import com.example.pulsepost.domain.dtos.User.UserDetailDto;
-import com.example.pulsepost.domain.dtos.User.UserUpdateDto;
+import com.example.pulsepost.domain.dtos.token.TokenDto;
+import com.example.pulsepost.domain.dtos.user.UserDetailDto;
+import com.example.pulsepost.domain.dtos.user.UserUpdateDto;
 import com.example.pulsepost.domain.exceptions.DomainException;
-import com.example.pulsepost.domain.mappers.User.UserMapper;
+import com.example.pulsepost.domain.mappers.user.UserMapper;
 import com.example.pulsepost.domain.models.UserModel;
 import com.example.pulsepost.presentation.messages.ExceptionMessage;
 

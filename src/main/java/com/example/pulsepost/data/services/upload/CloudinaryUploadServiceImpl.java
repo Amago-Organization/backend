@@ -1,6 +1,7 @@
 package com.example.pulsepost.data.services.upload;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +22,33 @@ public class CloudinaryUploadServiceImpl implements CloudinaryUploadService {
     @Override
     public String uploadFile(MultipartFile file, String publicId) {
         try {
-            var uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-                    "public_id", publicId,
-                    "overwrite", true));
+
+            String contentType = file.getContentType();
+
+            if (contentType == null) {
+                throw new DomainException(ExceptionMessage.invalidFileType);
+            }
+
+            boolean isPng = contentType.equals("image/png");
+            boolean isJpg = contentType.equals("image/jpeg");
+            boolean isMp4 = contentType.equals("video/mp4");
+
+            if (!isPng && !isJpg && !isMp4) {
+                throw new DomainException(ExceptionMessage.invalidFileType);
+            }
+
+            boolean isVideo = isMp4;
+            String typePrefix = isVideo ? "video" : "image";
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> options = ObjectUtils.asMap(
+                    "public_id", typePrefix + "/" + publicId,
+                    "overwrite", true,
+                    "resource_type", isVideo ? "video" : "image");
+
+            Map<?, ?> uploadResult = cloudinary.uploader()
+                    .upload(file.getBytes(), options);
+
             return uploadResult.get("secure_url").toString();
         } catch (IOException e) {
             throw new DomainException(ExceptionMessage.uploadFileError);
