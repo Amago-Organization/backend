@@ -8,4 +8,7 @@ public interface UserService {
     public UserDetailDto register(UserModel data);
 
     public TokenDto login(UserModel data);
+
+    public UserDetailDto detail();
+
 }

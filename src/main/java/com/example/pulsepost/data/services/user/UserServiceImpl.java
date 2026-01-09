@@ -2,6 +2,7 @@ package com.example.pulsepost.data.services.user;
 
 import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,22 @@ public class UserServiceImpl implements UserService {
 
         String token = tokenService.generateToken(user.get().getEmail(), user.get().getPassword());
         return new TokenDto(token);
+    }
+
+    @Override
+    @Transactional
+    public UserDetailDto detail() {
+        Object principal = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (!(principal instanceof UserModel)) {
+            throw new DomainException(ExceptionMessage.invalidAuthentication);
+        }
+
+        UserModel user = (UserModel) principal;
+
+        return UserMapper.toDetailDto(user);
     }
 
 }
