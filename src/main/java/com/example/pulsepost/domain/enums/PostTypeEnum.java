@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum TypePostEnum {
+public enum PostTypeEnum {
     TEXT("TEXT"),
     IMAGE("IMAGE"),
     VIDEO("VIDEO");

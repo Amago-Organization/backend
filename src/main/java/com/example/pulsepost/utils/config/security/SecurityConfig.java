@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/post/update/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/post/delete/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/post/list").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/post/list/post-type/**").authenticated()
 
                 )
 

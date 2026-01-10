@@ -12,7 +12,7 @@ import com.example.pulsepost.domain.dtos.post.PostDetailDto;
 import com.example.pulsepost.domain.dtos.post.PostListDto;
 import com.example.pulsepost.domain.dtos.post.PostRegisterDto;
 import com.example.pulsepost.domain.dtos.post.PostUpdateDto;
-import com.example.pulsepost.domain.enums.TypePostEnum;
+import com.example.pulsepost.domain.enums.PostTypeEnum;
 import com.example.pulsepost.domain.exceptions.DomainException;
 import com.example.pulsepost.domain.mappers.post.PostMapper;
 import com.example.pulsepost.domain.models.PostModel;
@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
 
         PostModel post = postMapper.toEntityRegister(data);
 
-        post.setUseId(user);
+        post.setUserId(user);
 
         MultipartFile file = data.file();
         if (file != null && !file.isEmpty()) {
@@ -54,11 +54,11 @@ public class PostServiceImpl implements PostService {
             String contentType = file.getContentType();
 
             if (contentType != null && contentType.startsWith("video/")) {
-                post.setTypePost(TypePostEnum.VIDEO);
+                post.setPostType(PostTypeEnum.VIDEO);
             } else if (contentType != null && contentType.startsWith("image/")) {
-                post.setTypePost(TypePostEnum.IMAGE);
+                post.setPostType(PostTypeEnum.IMAGE);
             } else {
-                post.setTypePost(TypePostEnum.TEXT);
+                post.setPostType(PostTypeEnum.TEXT);
             }
 
             String fileUrl = cloudinaryUploadService.uploadFile(file, post.getId());
@@ -70,12 +70,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public PostDetailDto detail(String id) {
         return PostMapper.toDetailDto(postRepository.findById(id).map(p -> p)
                 .orElseThrow(() -> new DomainException(ExceptionMessage.notFound("Post"))));
     }
 
     @Override
+    @Transactional
     public PostDetailDto update(String id, PostUpdateDto data) {
 
         PostModel post = postRepository.findById(id).map(p -> p)
@@ -94,13 +96,13 @@ public class PostServiceImpl implements PostService {
             boolean isVideo = false;
 
             if (contentType != null && contentType.startsWith("video/")) {
-                post.setTypePost(TypePostEnum.VIDEO);
+                post.setPostType(PostTypeEnum.VIDEO);
                 isVideo = true;
             } else if (contentType != null && contentType.startsWith("image/")) {
-                post.setTypePost(TypePostEnum.IMAGE);
+                post.setPostType(PostTypeEnum.IMAGE);
                 isVideo = false;
             } else {
-                post.setTypePost(TypePostEnum.TEXT);
+                post.setPostType(PostTypeEnum.TEXT);
                 isVideo = false;
             }
 
@@ -124,14 +126,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void delete(String id) {
         postRepository.deleteById(postRepository.findById(id).map(p -> p.getId())
                 .orElseThrow(() -> new DomainException(ExceptionMessage.notFound("Post"))));
     }
 
     @Override
+    @Transactional
     public PostListDto list() {
-        return  PostMapper.toListDto(postRepository.findAll());        
+        return PostMapper.toListDto(postRepository.findAllByOrderByCreatedAtDesc());
+    }
+
+    @Override
+    @Transactional
+    public PostListDto listByPostType(String type) {
+        Object principal = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (!(principal instanceof UserModel)) {
+            throw new DomainException(ExceptionMessage.invalidAuthentication);
+        }
+
+        UserModel user = (UserModel) principal;
+
+        return PostMapper.toListDto(postRepository.findAllByPostTypeAndUserIdOrderByCreatedAtDesc(PostTypeEnum.valueOf(type), user));
     }
 
 }

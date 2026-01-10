@@ -48,4 +48,9 @@ public class PostController {
     public PostListDto list() {
         return postService.list();
     }
+
+    @GetMapping("/list/post-type/{type}")
+    public PostListDto listByPostType(@PathVariable String type) {
+        return postService.listByPostType(type);
+    }
 }

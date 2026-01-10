@@ -2,7 +2,7 @@ package com.example.pulsepost.domain.models;
 
 import java.time.LocalDateTime;
 
-import com.example.pulsepost.domain.enums.TypePostEnum;
+import com.example.pulsepost.domain.enums.PostTypeEnum;
 import com.example.pulsepost.presentation.validations.GroupValidation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -41,7 +41,7 @@ public class PostModel {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonProperty(access = Access.WRITE_ONLY)
-    private UserModel useId;
+    private UserModel userId;
 
     @NotBlank(groups = GroupValidation.Create.class)
     @Size(max = 255)
@@ -52,9 +52,9 @@ public class PostModel {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "type_post", nullable = false)
+    @Column(name = "post_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TypePostEnum typePost;
+    private PostTypeEnum postType;
 
     @Column(name = "file", nullable = true, columnDefinition = "TEXT")
     private String file;

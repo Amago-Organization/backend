@@ -11,7 +11,7 @@ import com.example.pulsepost.domain.dtos.post.PostDetailDto;
 import com.example.pulsepost.domain.dtos.post.PostListDto;
 import com.example.pulsepost.domain.dtos.post.PostRegisterDto;
 import com.example.pulsepost.domain.dtos.post.PostUpdateDto;
-import com.example.pulsepost.domain.enums.TypePostEnum;
+import com.example.pulsepost.domain.enums.PostTypeEnum;
 import com.example.pulsepost.domain.models.PostModel;
 
 @Component
@@ -21,7 +21,7 @@ public class PostMapper {
         if (model == null) {
             return null;
         }
-        return new PostRegisterDto(model.getUseId(), model.getTitle(), model.getDescription(),
+        return new PostRegisterDto(model.getUserId(), model.getTitle(), model.getDescription(),
                 file);
     }
 
@@ -29,7 +29,7 @@ public class PostMapper {
         if (model == null) {
             return null;
         }
-        return new PostUpdateDto(model.getTitle(), model.getDescription(), model.getTypePost(), file);
+        return new PostUpdateDto(model.getTitle(), model.getDescription(), model.getPostType(), file);
     }
 
     public PostModel toEntityRegister(PostRegisterDto dto) {
@@ -39,10 +39,10 @@ public class PostMapper {
 
         PostModel model = new PostModel();
 
-        model.setUseId(dto.userId());
+        model.setUserId(dto.userId());
         model.setTitle(dto.title());
         model.setDescription(dto.description());
-        model.setTypePost(TypePostEnum.TEXT);
+        model.setPostType(PostTypeEnum.TEXT);
         model.setCreatedAt(LocalDateTime.now());
         return model;
     }
@@ -63,7 +63,7 @@ public class PostMapper {
         }
         if (dto.file() != null) {
             model.setFile(fileUrl);
-            model.setTypePost(dto.typePost());
+            model.setPostType(dto.postType());
         }
 
         model.setUpdatedAt(LocalDateTime.now());
@@ -71,7 +71,7 @@ public class PostMapper {
     }
 
     public static PostDetailDto toDetailDto(PostModel model) {
-        return new PostDetailDto(model.getId(), model.getTitle(), model.getDescription(), model.getTypePost(),
+        return new PostDetailDto(model.getId(), model.getTitle(), model.getDescription(), model.getPostType(),
                 model.getFile(), model.getCreatedAt(), model.getUpdatedAt());
     }
 

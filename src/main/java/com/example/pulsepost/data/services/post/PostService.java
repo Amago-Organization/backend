@@ -16,4 +16,6 @@ public interface PostService {
 
     public PostListDto list();
 
+    public PostListDto listByPostType(String type);
+
 }

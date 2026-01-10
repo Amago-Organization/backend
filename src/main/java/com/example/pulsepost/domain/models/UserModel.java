@@ -64,7 +64,7 @@ public class UserModel {
     private LocalDateTime updatedAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "useId")
+    @OneToMany(mappedBy = "userId")
     List<PostModel> posts = new ArrayList<>();
 
 }
