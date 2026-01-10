@@ -11,6 +11,7 @@ import com.example.pulsepost.domain.dtos.post.PostDetailDto;
 import com.example.pulsepost.domain.dtos.post.PostListDto;
 import com.example.pulsepost.domain.dtos.post.PostRegisterDto;
 import com.example.pulsepost.domain.dtos.post.PostUpdateDto;
+import com.example.pulsepost.domain.dtos.user.summary.UserSummaryDto;
 import com.example.pulsepost.domain.enums.PostTypeEnum;
 import com.example.pulsepost.domain.models.PostModel;
 
@@ -71,8 +72,16 @@ public class PostMapper {
     }
 
     public static PostDetailDto toDetailDto(PostModel model) {
+        UserSummaryDto user = null;
+
+        if (model.getUserId() != null) {
+            user = new UserSummaryDto(
+                    model.getUserId().getId(),
+                    model.getUserId().getName(),
+                    model.getUserId().getImage());
+        }
         return new PostDetailDto(model.getId(), model.getTitle(), model.getDescription(), model.getPostType(),
-                model.getFile(), model.getCreatedAt(), model.getUpdatedAt());
+                model.getFile(), model.getCreatedAt(), model.getUpdatedAt(), user);
     }
 
     public static PostListDto toListDto(List<PostModel> modelList) {
