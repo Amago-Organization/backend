@@ -1,4 +1,4 @@
-package com.example.pulsepost.domain.dtos.User;
+package com.example.pulsepost.domain.dtos.user;
 
 import org.springframework.web.multipart.MultipartFile;
 

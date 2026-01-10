@@ -11,11 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.pulsepost.data.repositories.UserRepository;
 import com.example.pulsepost.data.services.token.TokenService;
 import com.example.pulsepost.data.services.upload.CloudinaryUploadService;
-import com.example.pulsepost.domain.dtos.Token.TokenDto;
-import com.example.pulsepost.domain.dtos.User.UserDetailDto;
-import com.example.pulsepost.domain.dtos.User.UserUpdateDto;
+import com.example.pulsepost.domain.dtos.user.UserDetailDto;
+import com.example.pulsepost.domain.dtos.user.UserUpdateDto;
+import com.example.pulsepost.domain.dtos.user.token.UserTokenDto;
 import com.example.pulsepost.domain.exceptions.DomainException;
-import com.example.pulsepost.domain.mappers.User.UserMapper;
+import com.example.pulsepost.domain.mappers.user.UserMapper;
 import com.example.pulsepost.domain.models.UserModel;
 import com.example.pulsepost.presentation.messages.ExceptionMessage;
 
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public TokenDto login(UserModel data) {
+    public UserTokenDto login(UserModel data) {
         Optional<UserModel> user = userRepository.findByEmail(data.getEmail())
                 .map(u -> u);
         boolean passwordValid = new BCryptPasswordEncoder().matches(data.getPassword(), user.get().getPassword());
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String token = tokenService.generateToken(user.get().getEmail(), user.get().getPassword());
-        return new TokenDto(token);
+        return new UserTokenDto(token);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
         if (file != null && !file.isEmpty()) {
 
             if (updatedUser.getImage() != null && !updatedUser.getImage().isEmpty()) {
-                cloudinaryUploadService.deleteFile(updatedUser.getId());
+                cloudinaryUploadService.deleteFile(updatedUser.getId(), false);
             }
 
             String imageUrl = cloudinaryUploadService.uploadFile(file, updatedUser.getId());
