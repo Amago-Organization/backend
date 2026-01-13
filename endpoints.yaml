@@ -1,0 +1,379 @@
+type: collection.insomnia.rest/5.0
+name: PULSE POST
+meta:
+  id: wrk_2d142030ab9d46fc98aab0977558e243
+  created: 1767921406363
+  modified: 1767921406363
+  description: ""
+collection:
+  - name: USER
+    meta:
+      id: fld_517475cb1ca745679902d8624a04cbf9
+      created: 1767921414916
+      modified: 1767921414916
+      sortKey: -1767921414916
+      description: ""
+    children:
+      - url: "{{ _.baseUrl.baseUrl }}/user/register"
+        name: Register
+        meta:
+          id: req_8658fbc455cc407bbfc9d289145bb251
+          created: 1767921418444
+          modified: 1768003959970
+          isPrivate: false
+          description: ""
+          sortKey: -1767921418444
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Luis",
+            	"email": "luis@gmail.com",
+            	"password": "1234567"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/user/login"
+        name: Login
+        meta:
+          id: req_7a418578c1084388b68d097e180603a1
+          created: 1767922954057
+          modified: 1768092771888
+          isPrivate: false
+          description: ""
+          sortKey: -1767654463418.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "lazaroalexandre.dev@gmail.com",
+            	"password": 123456
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/user/detail"
+        name: Details
+        meta:
+          id: req_a52a4dfb3eda455c95d371bfeefcd2e5
+          created: 1767924668373
+          modified: 1767924770344
+          isPrivate: false
+          description: ""
+          sortKey: -1767921418544
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/user/update"
+        name: Update
+        meta:
+          id: req_27b133ed31384057bd12be08a4966ac4
+          created: 1767968506825
+          modified: 1768293220028
+          isPrivate: false
+          description: ""
+          sortKey: -1767921418644
+        method: PATCH
+        body:
+          mimeType: multipart/form-data
+          params:
+            - id: pair_cd77fa4fd9e746b3a2e951bde2f5281f
+              name: name
+              value: Luis
+              description: ""
+              disabled: true
+            - id: pair_f5727e0473c94e94a3a6d47ae9ae1ab2
+              name: bio
+              value: las
+              description: ""
+              disabled: true
+            - id: pair_191dc512e6fd45d8a607466720ea2788
+              name: image
+              value: ""
+              description: ""
+              disabled: false
+              type: file
+              fileName: /home/lazaro/Documentos/A -
+                ESIG/frontend/assets/images/logo_vertical.png
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: POST
+    meta:
+      id: fld_8b769cf6e02e40e0b63045d1ce120db8
+      created: 1767978193884
+      modified: 1767978193884
+      sortKey: -1767978193884
+      description: ""
+    children:
+      - url: "{{ _.baseUrl.baseUrl }}/post/register"
+        name: Register
+        meta:
+          id: req_6566d8ca448e4287b935f4136a00bc03
+          created: 1767978197502
+          modified: 1768242423361
+          isPrivate: false
+          description: ""
+          sortKey: -1767978197502
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - id: pair_1d80e34f825941059ccb7c984b877883
+              name: title
+              value: Post Novo 04
+              description: ""
+              disabled: false
+            - id: pair_afcecc51dc0644a2b002e1832d6ed490
+              name: description
+              value: Description
+              description: ""
+              disabled: false
+            - id: pair_144e297f67894899a617f10b7bc09c72
+              name: file
+              value: ""
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/post/detail/6a2c451c-f4d9-48c7-9e29-a1ecbb809b03"
+        name: Detail
+        meta:
+          id: req_9c1e373313304f3cbb5da72994a24b9f
+          created: 1767986679240
+          modified: 1768268056677
+          isPrivate: false
+          description: ""
+          sortKey: -1767986679240
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          prefix: Bearer
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/post/update/3816054b-c406-4cc0-bc24-7a88ea5e0499"
+        name: Update
+        meta:
+          id: req_f65b1f52f1ea4ae491d24499395ca89c
+          created: 1767992521872
+          modified: 1768293193191
+          isPrivate: false
+          description: ""
+          sortKey: -1767992521872
+        method: PATCH
+        body:
+          mimeType: multipart/form-data
+          params:
+            - id: pair_885602e947834c77a6d256ab4aa6ef9c
+              name: description
+              value: descrição alterada
+              description: ""
+              disabled: true
+            - id: pair_b2d8423a19c74acb96182b73d405ca6d
+              name: file
+              value: ""
+              description: ""
+              disabled: true
+              type: file
+              fileName: /home/lazaro/Imagens/Capturas de tela/Captura de tela de 2026-01-05
+                15-29-17.png
+            - id: pair_46975dd257be4631bd112199da9a2f75
+              name: title
+              value: Post 7
+              description: ""
+              disabled: false
+              type: file
+              fileName: /home/lazaro/Documentos/A -
+                ESIG/frontend/assets/images/logo_vertical.png
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          prefix: Bearer
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/post/delete/c96989f0-fb84-4c9f-a0b2-dbb0f470dc75"
+        name: Delete
+        meta:
+          id: req_0c5af12e2f4c47d1bf75e6970a966c68
+          created: 1767993981129
+          modified: 1768265567169
+          isPrivate: false
+          description: ""
+          sortKey: -1767993981129
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/post/list"
+        name: List
+        meta:
+          id: req_242478ea75ad4efaaf18baeb0d3674b1
+          created: 1767994840497
+          modified: 1768077172414
+          isPrivate: false
+          description: ""
+          sortKey: -1767994840497
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          disabled: false
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl.baseUrl }}/post/list/post-type/IMAGE"
+        name: ListByPostType
+        meta:
+          id: req_2b0afcaafbbc47a9ac19a698378531b3
+          created: 1767996145461
+          modified: 1768004095085
+          isPrivate: false
+          description: ""
+          sortKey: -1767994410813
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.0
+        authentication:
+          type: bearer
+          disabled: false
+          token: "{% response 'body', 'req_7a418578c1084388b68d097e180603a1',
+            'b64::JC50b2tlbg==::46b', 'never', 60 %}"
+          prefix: Bearer
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_3315b2a456450dafa9e622902c577cf62da7c50d
+    created: 1767921406405
+    modified: 1767921406405
+environments:
+  name: Base Environment
+  meta:
+    id: env_3315b2a456450dafa9e622902c577cf62da7c50d
+    created: 1767921406396
+    modified: 1768293137324
+    isPrivate: false
+  data:
+    baseUrl:
+      baseUrl: http://10.103.187.132:8080
