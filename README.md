@@ -43,14 +43,6 @@ Execute o comando para rodar o projeto:
     - mvn spring-boot:run
 
 
-### No Windows
-
-  - Execute o comando para limpar e reconstruir o projeto spring no windows:
-    -  ./mvnw clean package
-        
-  - Execute o comando para rodar o projeto no windows:
-    - ./mvnw spring-boot:run
-
 ## Endpoints
 
 [endpoints.yaml](./endpoints.yaml)
