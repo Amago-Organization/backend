@@ -34,20 +34,13 @@ A estrutura do projeto segue o padrão de modularização por domínio:
 ```text
 amago/
 ├── features/
-│   ├── post/
+│   ├── module_name/
 │   │   ├── controller/
 │   │   ├── dto/
+│   │   ├── repository/
+│   │   ├── mapper/
+│   │   ├── service/
 │   │   ├── enums/
-│   │   ├── repository/
-│   │   ├── mapper/
-│   │   ├── service/
-│   │   └── model/
-│   ├── user/
-│   │   ├── controller/
-│   │   ├── dto/
-│   │   ├── repository/
-│   │   ├── mapper/
-│   │   ├── service/
 │   │   └── model/
 ├── core/
 │   ├── config/
