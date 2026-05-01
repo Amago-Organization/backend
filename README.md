@@ -39,9 +39,8 @@ Ao explorar as branches do repositório, é possível acompanhar a evolução do
 Execute o comando para limpar e reconstruir o projeto spring:
     - mvn clean package
     
-Execute o comando para rodar o projeto:
+Execute o comando para rodar o projeto na web:
     - mvn spring-boot:run
-
 
 ## Endpoints
 
