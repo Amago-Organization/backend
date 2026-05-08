@@ -47,8 +47,7 @@ public class UserModel {
     private String email;
 
     @NotBlank(groups = { GroupValidation.Create.class, GroupValidation.Login.class })
-    @Size(min = 6)
-    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "bio", nullable = true, columnDefinition = "TEXT")
