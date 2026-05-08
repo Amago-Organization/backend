@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.amago.core.utils.validations.GroupValidation;
+import com.example.amago.features.user.dto.request.UserLoginDto;
 import com.example.amago.features.user.dto.request.UserRegisterDto;
 import com.example.amago.features.user.dto.request.UserUpdateDto;
 import com.example.amago.features.user.dto.response.UserDetailDto;
 import com.example.amago.features.user.dto.response.UserTokenDto;
-import com.example.amago.features.user.model.UserModel;
 import com.example.amago.features.user.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserTokenDto LoginUser(@Validated(GroupValidation.Login.class) @RequestBody UserModel data) {
+    public UserTokenDto LoginUser(@Validated(GroupValidation.Login.class) @RequestBody UserLoginDto data) {
         return userService.login(data);
     }
 
