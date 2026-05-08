@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UserRegisterDto(@NotBlank(groups = GroupValidation.Create.class) @Size(max = 255) String name,
-        @NotBlank(groups = GroupValidation.Create.class) @Size(max = 255) @Email String email,
-        @NotBlank(groups = GroupValidation.Create.class) @Size(min = 6, max = 10) @Pattern(regexp = RegexConstants.passwordAlfaNumericSpecialUpperLowerCase, message = ExceptionMessage.invalidPassword) String password) {
+public record UserLoginDto(
+        @NotBlank(groups = GroupValidation.Login.class) @Size(max = 255) @Email String email,
+        @NotBlank(groups = GroupValidation.Login.class) @Size(min = 6, max = 10) @Pattern(regexp = RegexConstants.passwordAlfaNumericSpecialUpperLowerCase, message = ExceptionMessage.invalidPassword) String password) {
 }

@@ -12,6 +12,7 @@ import com.example.amago.core.services.token.TokenService;
 import com.example.amago.core.services.upload.CloudinaryUploadService;
 import com.example.amago.core.utils.messages.ExceptionMessage;
 import com.example.amago.features.post.mapper.UserMapper;
+import com.example.amago.features.user.dto.request.UserLoginDto;
 import com.example.amago.features.user.dto.request.UserRegisterDto;
 import com.example.amago.features.user.dto.request.UserUpdateDto;
 import com.example.amago.features.user.dto.response.UserDetailDto;
@@ -50,13 +51,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserTokenDto login(UserModel data) {
+    public UserTokenDto login(UserLoginDto data) {
 
-        UserModel user = userRepository.findByEmail(data.getEmail())
+        UserModel user = userRepository.findByEmail(data.email())
                 .orElseThrow(() -> new DomainException(ExceptionMessage.invalidAuthentication));
 
         boolean passwordValid = new BCryptPasswordEncoder()
-                .matches(data.getPassword(), user.getPassword());
+                .matches(data.password(), user.getPassword());
 
         if (!passwordValid) {
             throw new DomainException(ExceptionMessage.invalidAuthentication);

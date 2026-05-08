@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.amago.core.exceptions.DomainException;
 import com.example.amago.core.services.token.TokenService;
 import com.example.amago.core.services.upload.CloudinaryUploadService;
+import com.example.amago.features.user.dto.request.UserLoginDto;
 import com.example.amago.features.user.dto.request.UserRegisterDto;
 import com.example.amago.features.user.dto.request.UserUpdateDto;
 import com.example.amago.features.user.dto.response.UserDetailDto;
@@ -58,7 +59,7 @@ public class UserServiceImplTest {
         user.setName("Lázaro");
         user.setEmail("lazaro@gmail.com");
 
-        user.setPassword(encoder.encode("123456"));
+        user.setPassword(encoder.encode("Senha@123"));
     }
 
     @Test
@@ -101,11 +102,9 @@ public class UserServiceImplTest {
     @DisplayName("Deve fazer login com sucesso")
     void shouldLoginSuccessfully() {
 
-        UserModel loginUser = new UserModel();
-        loginUser.setEmail("lazaro@gmail.com");
-        loginUser.setPassword("123456"); 
+        UserLoginDto loginUser = new UserLoginDto("lazaro@gmail.com", "Senha@123");
 
-        when(userRepository.findByEmail(loginUser.getEmail()))
+        when(userRepository.findByEmail(loginUser.email()))
                 .thenReturn(Optional.of(user));
 
         when(tokenService.generateToken(any(), any()))
@@ -121,11 +120,9 @@ public class UserServiceImplTest {
     @DisplayName("Deve falhar login quando email não existe")
     void shouldFailLoginWhenEmailNotFound() {
 
-        UserModel loginUser = new UserModel();
-        loginUser.setEmail("teste@gmail.com");
-        loginUser.setPassword("123456");
+        UserLoginDto loginUser = new UserLoginDto("teste@gmail.com", "Senha@123");
 
-        when(userRepository.findByEmail(loginUser.getEmail()))
+        when(userRepository.findByEmail(loginUser.email()))
                 .thenReturn(Optional.empty());
 
         assertThrows(DomainException.class,
@@ -136,11 +133,9 @@ public class UserServiceImplTest {
     @DisplayName("Deve falhar login com senha inválida")
     void shouldFailLoginWhenPasswordInvalid() {
 
-        UserModel loginUser = new UserModel();
-        loginUser.setEmail("lazaro@gmail.com");
-        loginUser.setPassword("senhaErrada");
+        UserLoginDto loginUser = new UserLoginDto("lazaro@gmail.com", "senhaErrad4");
 
-        when(userRepository.findByEmail(loginUser.getEmail()))
+        when(userRepository.findByEmail(loginUser.email()))
                 .thenReturn(Optional.of(user));
 
         assertThrows(DomainException.class,
