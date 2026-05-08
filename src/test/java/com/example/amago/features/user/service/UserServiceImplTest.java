@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.amago.core.exceptions.DomainException;
 import com.example.amago.core.services.token.TokenService;
 import com.example.amago.core.services.upload.CloudinaryUploadService;
+import com.example.amago.features.user.dto.request.UserRegisterDto;
 import com.example.amago.features.user.dto.request.UserUpdateDto;
 import com.example.amago.features.user.dto.response.UserDetailDto;
 import com.example.amago.features.user.dto.response.UserTokenDto;
@@ -64,13 +65,15 @@ public class UserServiceImplTest {
     @DisplayName("Deve registrar usuário com sucesso")
     void shouldRegisterUserSuccessfully() {
 
-        when(userRepository.findByEmail(user.getEmail()))
+        UserRegisterDto registerDto = new UserRegisterDto("Lázaro", "lazaro@gmail.com", "123456");
+
+        when(userRepository.findByEmail(registerDto.email()))
                 .thenReturn(Optional.empty());
 
         when(userRepository.save(any(UserModel.class)))
                 .thenReturn(user);
 
-        UserDetailDto result = service.register(user);
+        UserDetailDto result = service.register(registerDto);
 
         assertNotNull(result);
         verify(userRepository).save(any(UserModel.class));
@@ -84,7 +87,7 @@ public class UserServiceImplTest {
                 .thenReturn(Optional.of(user));
 
         assertThrows(DomainException.class,
-                () -> service.register(user));
+                () -> service.register(new UserRegisterDto(user.getName(), user.getEmail(), "123456")));
     }
 
     @Test

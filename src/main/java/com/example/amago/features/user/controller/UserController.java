@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.amago.core.utils.validations.GroupValidation;
+import com.example.amago.features.user.dto.request.UserRegisterDto;
 import com.example.amago.features.user.dto.request.UserUpdateDto;
 import com.example.amago.features.user.dto.response.UserDetailDto;
 import com.example.amago.features.user.dto.response.UserTokenDto;
@@ -24,7 +25,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public UserDetailDto registerUser(@Validated(GroupValidation.Create.class) @RequestBody UserModel data) {
+    public UserDetailDto registerUser(@Validated(GroupValidation.Create.class) @RequestBody UserRegisterDto data) {
         return userService.register(data);
     }
 

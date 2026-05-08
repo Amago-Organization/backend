@@ -1,4 +1,5 @@
 package com.example.amago.core.exceptions;
+
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -40,18 +41,30 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
 
     @Override
     @Nullable
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(status);
-        problemDetail.setTitle(ex.getMessage());
-        problemDetail.setType(URI.create("https://site-documentacao/erros/regra-de-negocio"));
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
 
-        Map<String, String> fields = ex.getBindingResult().getAllErrors().stream()
-                .collect(Collectors.toMap(error -> ((FieldError) error).getField(),
-                        DefaultMessageSourceResolvable::getDefaultMessage));
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+
+        problemDetail.setTitle("Erro de validação");
+        problemDetail.setType(
+                URI.create("https://site-documentacao/erros/regra-de-negocio"));
+
+        Map<String, String> fields = ex.getBindingResult()
+                .getAllErrors()
+                .stream()
+                .collect(Collectors.toMap(
+                        error -> ((FieldError) error).getField(),
+                        DefaultMessageSourceResolvable::getDefaultMessage,
+                        (existing, replacement) -> existing));
 
         problemDetail.setProperty("fields", fields);
-        return super.handleExceptionInternal(ex, problemDetail, headers, status, request);
-    }
 
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(problemDetail);
+    }
 }
