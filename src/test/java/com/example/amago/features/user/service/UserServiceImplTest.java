@@ -65,7 +65,7 @@ public class UserServiceImplTest {
     @DisplayName("Deve registrar usuário com sucesso")
     void shouldRegisterUserSuccessfully() {
 
-        UserRegisterDto registerDto = new UserRegisterDto("Lázaro", "lazaro@gmail.com", "123456");
+        UserRegisterDto registerDto = new UserRegisterDto("Lázaro", "lazaro@gmail.com", "Senha@123");
 
         when(userRepository.findByEmail(registerDto.email()))
                 .thenReturn(Optional.empty());
@@ -76,6 +76,11 @@ public class UserServiceImplTest {
         UserDetailDto result = service.register(registerDto);
 
         assertNotNull(result);
+        assertEquals("Lázaro", result.name());
+        assertEquals("lazaro@gmail.com", result.email());
+        assertNull(result.bio(), "bio deve ser nulo no cadastro");
+        assertNull(result.image(), "image deve ser nulo no cadastro");
+        assertNull(result.updatedAt(), "updated_at deve ser nulo no cadastro");
         verify(userRepository).save(any(UserModel.class));
     }
 
@@ -86,8 +91,10 @@ public class UserServiceImplTest {
         when(userRepository.findByEmail(user.getEmail()))
                 .thenReturn(Optional.of(user));
 
-        assertThrows(DomainException.class,
-                () -> service.register(new UserRegisterDto(user.getName(), user.getEmail(), "123456")));
+        DomainException exception = assertThrows(DomainException.class,
+                () -> service.register(new UserRegisterDto(user.getName(), user.getEmail(), "Senha@123")));
+
+        assertEquals("E-mail já em uso!", exception.getMessage());
     }
 
     @Test
