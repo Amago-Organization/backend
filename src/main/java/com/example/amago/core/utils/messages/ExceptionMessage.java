@@ -11,6 +11,8 @@ public class ExceptionMessage {
     
     public static final String invalidFileType = "Tipo de arquivo inválido!";
 
+    public static final String invalidPassword = "A senha deve conter ao menos 1 caractere maiúsculo, 1 caractere minúsculo, 1 número e 1 caractere especial!";
+
     public static final String attributeUsed(String attribute) {
         return attribute + " já em uso!";
     }

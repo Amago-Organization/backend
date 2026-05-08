@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.amago.core.exceptions.DomainException;
 import com.example.amago.core.services.token.TokenService;
 import com.example.amago.core.services.upload.CloudinaryUploadService;
+import com.example.amago.features.user.dto.request.UserRegisterDto;
 import com.example.amago.features.user.dto.request.UserUpdateDto;
 import com.example.amago.features.user.dto.response.UserDetailDto;
 import com.example.amago.features.user.dto.response.UserTokenDto;
@@ -64,15 +65,22 @@ public class UserServiceImplTest {
     @DisplayName("Deve registrar usuário com sucesso")
     void shouldRegisterUserSuccessfully() {
 
-        when(userRepository.findByEmail(user.getEmail()))
+        UserRegisterDto registerDto = new UserRegisterDto("Lázaro", "lazaro@gmail.com", "Senha@123");
+
+        when(userRepository.findByEmail(registerDto.email()))
                 .thenReturn(Optional.empty());
 
         when(userRepository.save(any(UserModel.class)))
                 .thenReturn(user);
 
-        UserDetailDto result = service.register(user);
+        UserDetailDto result = service.register(registerDto);
 
         assertNotNull(result);
+        assertEquals("Lázaro", result.name());
+        assertEquals("lazaro@gmail.com", result.email());
+        assertNull(result.bio(), "bio deve ser nulo no cadastro");
+        assertNull(result.image(), "image deve ser nulo no cadastro");
+        assertNull(result.updatedAt(), "updated_at deve ser nulo no cadastro");
         verify(userRepository).save(any(UserModel.class));
     }
 
@@ -83,8 +91,10 @@ public class UserServiceImplTest {
         when(userRepository.findByEmail(user.getEmail()))
                 .thenReturn(Optional.of(user));
 
-        assertThrows(DomainException.class,
-                () -> service.register(user));
+        DomainException exception = assertThrows(DomainException.class,
+                () -> service.register(new UserRegisterDto(user.getName(), user.getEmail(), "Senha@123")));
+
+        assertEquals("E-mail já em uso!", exception.getMessage());
     }
 
     @Test
