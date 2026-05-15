@@ -15,4 +15,5 @@ public interface UserService {
 
     public UserDetailDto update(UserUpdateDto data);
 
+    public void logout();
 }

@@ -5,4 +5,7 @@ public interface TokenService {
 
     public String validateToken(String token);
 
+    void revokeToken(String token);
+
+    boolean isRevoked(String token);
 }

@@ -1,6 +1,7 @@
 package com.example.amago.features.user.controller;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -188,5 +189,26 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.title").value("Erro de validação"))
                 .andExpect(jsonPath("$.fields.password").exists());
+    }
+
+    @Test
+    @DisplayName("Fazer logout com sucesso")
+    void shouldLogoutUserSuccessfully() throws Exception {
+        doNothing().when(userService).logout();
+
+        mockMvc.perform(post("/user/logout")
+                .header("Authorization", "Bearer jwt-token-123"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Falha ao fazer logout sem token válido")
+    void shouldFailLogoutWithoutValidToken() throws Exception {
+        doThrow(new DomainException("Autenticação inválida!"))
+                .when(userService).logout();
+
+        mockMvc.perform(post("/user/logout"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").value("Autenticação inválida!"));
     }
 }
