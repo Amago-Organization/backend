@@ -44,4 +44,9 @@ public class UserController {
         return userService.update(data);
     }
 
+    @PostMapping("/logout")
+    public void LogoutUser() {
+        userService.logout();
+    }
+
 }

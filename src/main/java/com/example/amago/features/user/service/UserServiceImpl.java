@@ -20,6 +20,7 @@ import com.example.amago.features.user.dto.response.UserTokenDto;
 import com.example.amago.features.user.model.UserModel;
 import com.example.amago.features.user.repository.UserRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private TokenService tokenService;
     private CloudinaryUploadService cloudinaryUploadService;
+    private final HttpServletRequest request;
 
     @Override
     @Transactional
@@ -130,6 +132,24 @@ public class UserServiceImpl implements UserService {
         }
 
         return UserMapper.toDetailDto(updatedUser);
+    }
+
+    @Override
+    @Transactional
+    public void logout() {
+
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new DomainException(
+                    ExceptionMessage.invalidAuthentication);
+        }
+
+        String token = authHeader.replace("Bearer ", "");
+
+        tokenService.revokeToken(token);
+
+        SecurityContextHolder.clearContext();
     }
 
 }
