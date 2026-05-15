@@ -29,6 +29,8 @@ import com.example.amago.features.user.dto.response.UserTokenDto;
 import com.example.amago.features.user.model.UserModel;
 import com.example.amago.features.user.repository.UserRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
 
@@ -43,6 +45,9 @@ public class UserServiceImplTest {
 
     @Mock
     private MultipartFile multipartFile;
+
+    @Mock
+    private HttpServletRequest request;
 
     @InjectMocks
     private UserServiceImpl service;
@@ -216,6 +221,37 @@ public class UserServiceImplTest {
 
         assertThrows(DomainException.class,
                 () -> service.update(dto));
+    }
+
+    @Test
+    @DisplayName("Deve fazer logout com sucesso")
+    void shouldLogoutSuccessfully() {
+
+        String token = "jwt-token-123";
+        String authHeader = "Bearer " + token;
+
+        when(request.getHeader("Authorization"))
+                .thenReturn(authHeader);
+
+        service.logout();
+
+        verify(request).getHeader("Authorization");
+        verify(tokenService).revokeToken(token);
+    }
+
+    @Test
+    @DisplayName("Deve falhar logout sem token válido")
+    void shouldFailLogoutWithoutValidToken() {
+
+        when(request.getHeader("Authorization"))
+                .thenReturn(null);
+
+        DomainException exception = assertThrows(DomainException.class,
+                () -> service.logout());
+
+        assertEquals("Autenticação inválida!", exception.getMessage());
+        verify(request).getHeader("Authorization");
+        verify(tokenService, never()).revokeToken(any());
     }
 
 }

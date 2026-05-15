@@ -28,6 +28,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/detail").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/user/update").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/user/logout").authenticated()
+
 
                         .requestMatchers(HttpMethod.POST, "/post/register").authenticated()
                         .requestMatchers(HttpMethod.GET, "/post/detail/**").authenticated()

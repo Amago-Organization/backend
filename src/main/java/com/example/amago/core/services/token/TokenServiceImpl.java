@@ -2,6 +2,8 @@ package com.example.amago.core.services.token;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ public class TokenServiceImpl implements TokenService {
 
     @Value("{api.security.token.secret}")
     private String secret;
+
+    private final Set<String> revokedTokens = new HashSet<>();
 
     @Override
     public String generateToken(String email, String password) {
@@ -37,6 +41,10 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String validateToken(String token) {
+        if (isRevoked(token)) {
+            throw new DomainException("Token inválido.");
+        }
+
         Algorithm algorithm = Algorithm.HMAC256(secret);
         String tokenValidated = JWT.require(algorithm)
                 .withIssuer("auth-api")
@@ -44,6 +52,16 @@ public class TokenServiceImpl implements TokenService {
                 .verify(token)
                 .getSubject();
         return tokenValidated;
+    }
+
+    @Override
+    public void revokeToken(String token) {
+        revokedTokens.add(token);
+    }
+
+    @Override
+    public boolean isRevoked(String token) {
+        return revokedTokens.contains(token);
     }
 
 }
